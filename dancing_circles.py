@@ -5,7 +5,7 @@ import pydreamplet as dp
 from tools.runtime import get_motive, get_output_path
 
 motive = get_motive()
-theme = dp.Theme(f"tools/motives/{motive.value}.json") if motive else dp.Theme()
+theme = dp.Theme(f"tools/motives/{motive}.json") if motive else dp.Theme()
 
 svg = dp.SVG(1024, 1024)
 margin = 24
@@ -45,5 +45,5 @@ g.append(
     )
 )
 
-filename_suffix = f"_{motive.value}" if motive else ""
+filename_suffix = f"_{motive}" if motive else ""
 svg.save(get_output_path(f"dancing_circles{filename_suffix}.svg"))

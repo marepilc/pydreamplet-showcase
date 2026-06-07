@@ -2,14 +2,9 @@ import os
 import sys
 from pathlib import Path
 
-from tools.theme import Motive
 
-
-def get_motive() -> Motive | None:
-    motive = os.environ.get("PYDREAMPLET_MOTIVE")
-    if motive is None:
-        return None
-    return Motive(motive)
+def get_motive() -> str | None:
+    return os.environ.get("PYDREAMPLET_MOTIVE")
 
 
 def get_output_path(filename: str) -> str:
