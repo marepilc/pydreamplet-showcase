@@ -3,12 +3,12 @@ name = "pydreamplet-showcase"
 version = "0.1.0"
 requires-python = ">=3.14"
 dependencies = [
-    "pydreamplet>=2.1.0",
+    "pydreamplet>=2.1.1",
     "typer>=0.26.7",
 ]
 
-[tool.uv.sources]
-pydreamplet = { git = "https://github.com/marepilc/pydreamplet.git", rev = "daea2fe8807c9cd842ef9dbed97f8f909af36f83" }
+#[tool.uv.sources]
+#pydreamplet = { git = "https://github.com/marepilc/pydreamplet.git", rev = "daea2fe8807c9cd842ef9dbed97f8f909af36f83" }
 
 [project.scripts]
 dp = "tools.cli:app"
