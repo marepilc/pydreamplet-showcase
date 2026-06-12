@@ -1,4 +1,5 @@
 from math import cos, radians, sin
+from pathlib import Path
 
 import pydreamplet as dp
 
@@ -46,4 +47,4 @@ g.append(
 )
 
 filename_suffix = f"_{motive}" if motive else ""
-svg.save(get_output_path(f"dancing_circles{filename_suffix}.svg"))
+svg.save(get_output_path(f"{Path(__file__).stem}{filename_suffix}.svg"))

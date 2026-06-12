@@ -69,14 +69,10 @@ wheels = [
 [[package]]
 name = "pydreamplet"
 version = "2.1.0"
-source = { registry = "https://pypi.org/simple" }
+source = { git = "https://github.com/marepilc/pydreamplet.git?rev=daea2fe8807c9cd842ef9dbed97f8f909af36f83#daea2fe8807c9cd842ef9dbed97f8f909af36f83" }
 dependencies = [
     { name = "fonttools" },
     { name = "uharfbuzz" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/a8/27/19feb440d0783f863cafdf9dfc3e1c223db2668c08f664631706a2fcdbe4/pydreamplet-2.1.0.tar.gz", hash = "sha256:e8475a1076005f2df396d89b9fd62b7341b7e1bbb16a93869044143a17b3faa5", size = 465926, upload-time = "2026-06-07T15:33:57.944Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/53/44/1cc4056de90b6a75b4f4c7f14d03219ae1e4ab3705852d3ff7be4af29234/pydreamplet-2.1.0-py3-none-any.whl", hash = "sha256:b7725f2a03073ec93a98840dc6a4634914bc9736faf68b1668edf2704f2cd317", size = 125855, upload-time = "2026-06-07T15:33:55.08Z" },
 ]
 
 [[package]]
@@ -95,7 +91,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "pydreamplet", specifier = ">=2.1.0" },
+    { name = "pydreamplet", git = "https://github.com/marepilc/pydreamplet.git?rev=daea2fe8807c9cd842ef9dbed97f8f909af36f83" },
     { name = "typer", specifier = ">=0.26.7" },
 ]
 
