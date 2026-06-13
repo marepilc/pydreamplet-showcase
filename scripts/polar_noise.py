@@ -3,10 +3,10 @@ from pathlib import Path
 import pydreamplet as dp
 from pydreamplet.noise import SimplexNoise2D
 
-from tools.runtime import get_motive, get_output_path
+from tools.runtime import get_motive, get_motive_path, get_output_path
 
 motive = get_motive()
-theme = dp.Theme(f"tools/motives/{motive}.json") if motive else dp.Theme()
+theme = dp.Theme(get_motive_path(motive)) if motive else dp.Theme()
 
 noise = SimplexNoise2D()
 svg = dp.SVG(1024, 1024)

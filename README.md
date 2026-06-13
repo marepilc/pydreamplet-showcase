@@ -3,6 +3,16 @@
 A collection of SVG examples created with
 [pydreamplet](https://github.com/marepilc/pydreamplet).
 
+## Project Layout
+
+```text
+scripts/                  Showcase scripts
+data/<script-name>/       Data used by a specific showcase
+tools/motives/            Light and dark color motives
+tools/                    Shared CLI and runtime helpers
+output/<script-name>/     Generated SVG files
+```
+
 ## Requirements
 
 - Python 3.14 or newer
@@ -16,10 +26,16 @@ uv sync
 
 ## CLI
 
-Run an example by passing its Python file to `dp`:
+Run an example by passing its name to `dp`:
 
 ```shell
-uv run dp polar_noise.py
+uv run dp polar_noise
+```
+
+The CLI resolves short names from `scripts/`. An explicit path works too:
+
+```shell
+uv run dp scripts/polar_noise.py
 ```
 
 The generated SVG is written to a directory named after the script:
@@ -31,8 +47,8 @@ output/polar_noise/polar_noise.svg
 Use `--motive` (or `-m`) to apply one of the predefined color motives:
 
 ```shell
-uv run dp polar_noise.py --motive light
-uv run dp polar_noise.py -m dark
+uv run dp polar_noise --motive light
+uv run dp polar_noise -m dark
 ```
 
 When a motive is selected, the example scripts include it in the output
@@ -55,7 +71,7 @@ uv run dp --help
 Examples can also be run directly:
 
 ```shell
-uv run python polar_noise.py
+uv run python scripts/polar_noise.py
 ```
 
 Direct execution uses the default pydreamplet theme and still writes the file
@@ -63,11 +79,11 @@ under `output/<script-name>/`.
 
 ## Adding an Example
 
-1. Copy `template.py` to a descriptively named, lowercase snake-case file in
-   the repository root:
+1. Copy `scripts/template.py` to a descriptively named, lowercase snake-case
+   file in the `scripts` directory:
 
    ```shell
-   Copy-Item template.py my_example.py
+   Copy-Item scripts/template.py scripts/my_example.py
    ```
 
 2. Add the artwork after the `# your art here` marker. Keep the runtime setup
@@ -78,10 +94,10 @@ under `output/<script-name>/`.
 
    import pydreamplet as dp
 
-   from tools.runtime import get_motive, get_output_path
+   from tools.runtime import get_motive, get_motive_path, get_output_path
 
    motive = get_motive()
-   theme = dp.Theme(f"tools/motives/{motive}.json") if motive else dp.Theme()
+   theme = dp.Theme(get_motive_path(motive)) if motive else dp.Theme()
 
    svg = dp.SVG(1024, 1024)
 
@@ -91,23 +107,38 @@ under `output/<script-name>/`.
    svg.save(get_output_path(f"{Path(__file__).stem}{filename_suffix}.svg"))
    ```
 
-3. Use colors from `theme` where practical so the example works with both
-   predefined motives.
+3. If the example needs input data, store it under a directory matching the
+   script stem:
 
-4. Generate and inspect all variants:
-
-   ```shell
-   uv run dp my_example.py
-   uv run dp my_example.py -m light
-   uv run dp my_example.py -m dark
+   ```text
+   data/my_example/
    ```
 
-5. Run the linter:
+   Resolve data files with the shared runtime helper:
+
+   ```python
+   from tools.runtime import get_data_path
+
+   data_path = get_data_path(Path(__file__).stem, "input.json")
+   ```
+
+4. Use colors from `theme` where practical so the example works with both
+   predefined motives.
+
+5. Generate and inspect all variants:
+
+   ```shell
+   uv run dp my_example
+   uv run dp my_example -m light
+   uv run dp my_example -m dark
+   ```
+
+6. Run the linter:
 
    ```shell
    uv run ruff check .
    ```
 
 Generated files belong under `output/`, which is excluded from version
-control. Example source files should remain self-contained and import shared
-CLI/runtime behavior only from `tools/`.
+control. Keep example-specific data under `data/<script-name>/` and shared
+CLI/runtime behavior under `tools/`.
