@@ -1,52 +1,17 @@
-import json
-from dataclasses import dataclass
-from enum import IntEnum
 from itertools import groupby
 from math import asin, ceil
-from pathlib import Path
 
 import pydreamplet as dp
+from data_reader import Segmentation, get_data
 from pydreamplet.typography import TypographyMeasurer
 from pydreamplet.utils import degrees
 
-from tools.runtime import get_data_path, get_motive, get_motive_path, get_output_path
-
-
-class Segmentation(IntEnum):
-    PHASE_OUT = 0
-    STRATEGIC = 1
-    PREFERRED = 2
-    REGULAR = 3
-
-
-@dataclass
-class Supplier:
-    name: str
-    category: str
-    qn: int
-    ppm: int
-    qty: int
-    spend: int
-    segmentation: Segmentation
-
-
-# Get the data
-suppliers: list[Supplier] = []
-data_path = get_data_path(Path(__file__).stem, "suppliers.json")
-with open(data_path, "r") as f:
-    data = json.load(f)
-    for item in data:
-        suppliers.append(
-            Supplier(
-                name=item["supplierName"],
-                category=item["category"],
-                qn=item["qn"],
-                ppm=item["ppm"],
-                qty=item["qty"],
-                spend=item["spend"],
-                segmentation=Segmentation(item["segmentation"]),
-            )
-        )
+from tools.runtime import (
+    get_example_name,
+    get_motive,
+    get_motive_path,
+    get_output_path,
+)
 
 motive = get_motive()
 theme = dp.Theme(get_motive_path(motive)) if motive else dp.Theme()
@@ -56,6 +21,7 @@ main_group = dp.G(pos=(svg.w / 2, svg.h / 2))
 category_arcs_group = dp.G(pos=(svg.w / 2, svg.h / 2))
 svg.append(main_group, category_arcs_group)
 
+suppliers = get_data()
 
 # Calculate of the min and max values
 qn_range: tuple[int, int] = (
@@ -459,4 +425,4 @@ ppm_legend.append(
 )
 
 filename_suffix = f"_{motive}" if motive else ""
-svg.save(get_output_path(f"{Path(__file__).stem}{filename_suffix}.svg"))
+svg.save(get_output_path(f"{get_example_name()}{filename_suffix}.svg"))

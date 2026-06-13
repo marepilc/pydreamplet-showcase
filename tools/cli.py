@@ -1,5 +1,6 @@
 import os
 import runpy
+import sys
 from enum import StrEnum
 from pathlib import Path
 
@@ -16,14 +17,18 @@ class Motive(StrEnum):
 
 
 def resolve_script(script: Path) -> Path:
-    candidates = [script]
+    candidates: list[Path] = [script]
     if not script.is_absolute():
         candidates.append(SCRIPTS_DIR / script)
 
-    if script.suffix == "":
-        candidates.extend(candidate.with_suffix(".py") for candidate in candidates.copy())
-
+    expanded_candidates: list[Path] = []
     for candidate in candidates:
+        expanded_candidates.append(candidate)
+        if candidate.suffix == "":
+            expanded_candidates.append(candidate.with_suffix(".py"))
+            expanded_candidates.append(candidate / "main.py")
+
+    for candidate in expanded_candidates:
         resolved = candidate.resolve()
         if resolved.is_file():
             return resolved
@@ -35,16 +40,21 @@ def resolve_script(script: Path) -> Path:
 def main(
     script: Path = typer.Argument(
         ...,
-        help="Showcase script path or a script name from the scripts directory.",
+        help="Showcase name, directory, or Python entry-point path.",
     ),
     motive: Motive | None = typer.Option(None, "--motive", "-m"),
 ) -> None:
     script = resolve_script(script)
+    example_name = script.parent.name if script.name == "main.py" else script.stem
 
-    os.environ["PYDREAMPLET_SCRIPT_STEM"] = script.stem
+    os.environ["PYDREAMPLET_EXAMPLE_NAME"] = example_name
     if motive is None:
         os.environ.pop("PYDREAMPLET_MOTIVE", None)
     else:
         os.environ["PYDREAMPLET_MOTIVE"] = str(motive)
 
-    runpy.run_path(str(script), run_name="__main__")
+    sys.path.insert(0, str(script.parent))
+    try:
+        runpy.run_path(str(script), run_name="__main__")
+    finally:
+        sys.path.pop(0)

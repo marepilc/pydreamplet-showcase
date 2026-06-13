@@ -5,6 +5,15 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
+def get_example_name() -> str:
+    example_name = os.environ.get("PYDREAMPLET_EXAMPLE_NAME")
+    if example_name is not None:
+        return example_name
+
+    script_path = Path(sys.argv[0])
+    return script_path.parent.name if script_path.stem == "main" else script_path.stem
+
+
 def get_motive() -> str | None:
     return os.environ.get("PYDREAMPLET_MOTIVE")
 
@@ -18,10 +27,6 @@ def get_data_path(script_name: str, filename: str) -> Path:
 
 
 def get_output_path(filename: str) -> str:
-    script_stem = os.environ.get("PYDREAMPLET_SCRIPT_STEM")
-    if script_stem is None:
-        script_stem = Path(sys.argv[0]).stem
-
-    output_dir = PROJECT_ROOT / "output" / script_stem
+    output_dir = PROJECT_ROOT / "output" / get_example_name()
     output_dir.mkdir(parents=True, exist_ok=True)
     return str(output_dir / filename)

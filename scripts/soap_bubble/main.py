@@ -1,8 +1,11 @@
-from pathlib import Path
-
 import pydreamplet as dp
 
-from tools.runtime import get_motive, get_motive_path, get_output_path
+from tools.runtime import (
+    get_example_name,
+    get_motive,
+    get_motive_path,
+    get_output_path,
+)
 
 
 def animate(attribute: str, values: str, duration: str) -> dp.SvgElement:
@@ -588,4 +591,4 @@ for definition in (
 
 # Step 11: Save a separate default, light, or dark variant.
 filename_suffix = f"_{motive}" if motive else ""
-svg.save(get_output_path(f"{Path(__file__).stem}{filename_suffix}.svg"))
+svg.save(get_output_path(f"{get_example_name()}{filename_suffix}.svg"))
