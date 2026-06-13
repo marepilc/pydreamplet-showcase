@@ -68,15 +68,15 @@ wheels = [
 
 [[package]]
 name = "pydreamplet"
-version = "2.1.3"
+version = "2.1.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fonttools" },
     { name = "uharfbuzz" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2e/4a/72bdcf036e4eb0997749f67794ef4a7084c73e2d4f50c4f4ccddc6848f7c/pydreamplet-2.1.3.tar.gz", hash = "sha256:378067d12fa001d5d7ef50989b5b2effc2b3c93f36f891aadc2c333c3f09f0e4", size = 491122, upload-time = "2026-06-13T15:49:19.368Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/3b/e2/e808a89875fe3e68a247366ef4d212ab4d3bb44fd38479e53e03c5accec9/pydreamplet-2.1.4.tar.gz", hash = "sha256:bd25de07bd8cf1c17b1d5a96ef8406b212b3105edadc810718666312264c1f20", size = 491924, upload-time = "2026-06-13T20:42:58.162Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f9/2c/500bf49bdd1b514687b46fe64b70b928e700b7dfb8ae7d08ab25f47ca991/pydreamplet-2.1.3-py3-none-any.whl", hash = "sha256:9acdf873a4c567e802bddf04332cba50afbc66b5bb4699c2739af14c0bf19ef2", size = 127182, upload-time = "2026-06-13T15:49:20.567Z" },
+    { url = "https://files.pythonhosted.org/packages/00/e0/100bc38baeccb775f7395a95dfd82598001beaf3282c8c72cb293cf4bd82/pydreamplet-2.1.4-py3-none-any.whl", hash = "sha256:75d5c1a97523e8fe03a3c1fa8907cfbc1a9bc133d423656aa9d52a14d50b4d65", size = 127221, upload-time = "2026-06-13T20:42:56.787Z" },
 ]
 
 [[package]]
@@ -95,7 +95,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "pydreamplet", specifier = ">=2.1.3" },
+    { name = "pydreamplet", specifier = ">=2.1.4" },
     { name = "typer", specifier = ">=0.26.7" },
 ]
 
