@@ -9,7 +9,7 @@ A collection of SVG examples created with
 scripts/<example>/        Source files for a showcase
   main.py                 Showcase entry point
   *.py                    Optional local modules
-data/<script-name>/       Data used by a specific showcase
+  data/                   Data used by this showcase
 tools/motives/            Light and dark color motives
 tools/                    Shared CLI and runtime helpers
 output/<script-name>/     Generated SVG files
@@ -122,6 +122,8 @@ under `output/<script-name>/`.
      main.py
      components.py
      layout.py
+     data/
+       input.json
    ```
 
    The example directory is added to Python's import path by the CLI, so
@@ -132,20 +134,18 @@ under `output/<script-name>/`.
    from layout import create_layout
    ```
 
-4. If the example needs input data, store it under a directory matching the
-   example name:
+4. If the example needs input data, store it in its local `data` directory:
 
    ```text
-   data/my_example/
+   scripts/my_example/data/
    ```
 
    Resolve data files with the shared runtime helper:
 
    ```python
-   from tools.runtime import get_example_name
    from tools.runtime import get_data_path
 
-   data_path = get_data_path(get_example_name(), "input.json")
+   data_path = get_data_path("input.json")
    ```
 
 5. Use colors from `theme` where practical so the example works with both
@@ -167,5 +167,5 @@ under `output/<script-name>/`.
 
 Generated files belong under `output/`, which is excluded from version
 control. Keep example-specific source modules under `scripts/<example>/`,
-example data under `data/<example>/`, and shared CLI/runtime behavior under
-`tools/`.
+example data under `scripts/<example>/data/`, and shared CLI/runtime behavior
+under `tools/`.

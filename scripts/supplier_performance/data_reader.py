@@ -4,7 +4,6 @@ from enum import IntEnum
 
 from tools.runtime import (
     get_data_path,
-    get_example_name,
 )
 
 
@@ -29,8 +28,7 @@ class Supplier:
 # Get the data
 def get_data() -> list[Supplier]:
     suppliers: list[Supplier] = []
-    example_name = get_example_name()
-    data_path = get_data_path(example_name, "suppliers.json")
+    data_path = get_data_path("suppliers.json")
     with open(data_path, "r") as f:
         data = json.load(f)
         for item in data:

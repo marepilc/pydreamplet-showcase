@@ -20,7 +20,7 @@ svg = dp.SVG(1200, 720)
 
 # Step 2: Load the noun frequencies from this example's data directory.
 script_name = get_example_name()
-data_path = get_data_path(script_name, "word_counts.json")
+data_path = get_data_path("word_counts.json")
 data = json.loads(data_path.read_text(encoding="utf-8"))
 word_counts = [(str(word), int(count)) for word, count in data["words"]]
 

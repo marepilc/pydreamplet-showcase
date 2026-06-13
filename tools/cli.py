@@ -48,6 +48,7 @@ def main(
     example_name = script.parent.name if script.name == "main.py" else script.stem
 
     os.environ["PYDREAMPLET_EXAMPLE_NAME"] = example_name
+    os.environ["PYDREAMPLET_EXAMPLE_DIR"] = str(script.parent)
     if motive is None:
         os.environ.pop("PYDREAMPLET_MOTIVE", None)
     else:
