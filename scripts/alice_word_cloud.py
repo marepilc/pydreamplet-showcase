@@ -4,7 +4,7 @@ from math import cos, log, sin, sqrt, tau
 from pathlib import Path
 
 import pydreamplet as dp
-from pydreamplet.typography import TypographyMeasurer, get_system_font_path
+from pydreamplet.typography import TypographyMeasurer
 
 from tools.runtime import (
     get_data_path,
@@ -18,7 +18,6 @@ motive = get_motive()
 theme = dp.Theme(get_motive_path(motive)) if motive else dp.Theme()
 
 svg = dp.SVG(1200, 720)
-svg.append(dp.Rect(width=svg.w, height=svg.h))
 
 # Step 2: Load the noun frequencies from this example's data directory.
 script_name = Path(__file__).stem
@@ -26,20 +25,14 @@ data_path = get_data_path(script_name, "word_counts.json")
 data = json.loads(data_path.read_text(encoding="utf-8"))
 word_counts = [(str(word), int(count)) for word, count in data["words"]]
 
-# Step 3: Find one font that is available on the current system. The selected
-# file is used by TypographyMeasurer, while the matching family is used in SVG.
+# Step 3: Configure text measurement with the same CSS font family and weight
+# used by the SVG. Pydreamplet resolves the first available family.
 font_weight = 700
-font_family = ""
-for candidate in ("Proza Libre", "Arial", "Liberation Sans", "DejaVu Sans"):
-    font_path = get_system_font_path(candidate, font_weight)
-    if font_path is not None:
-        font_family = candidate
-        break
-
-if font_path is None:
-    raise RuntimeError("No supported sans-serif font was found.")
-
-measurer = TypographyMeasurer(dpi=72, font_path=font_path)
+measurer = TypographyMeasurer(
+    dpi=72,
+    font_family=theme.font_family,
+    weight=font_weight,
+)
 
 # Step 4: Choose a vivid palette. Reusing motive colors keeps the cloud
 # readable on both light and dark backgrounds.
@@ -215,14 +208,12 @@ for word_index, (word, count) in enumerate(word_counts):
                         word,
                         pos=(candidate_x, candidate_y),
                         fill=palette[word_index % len(palette)],
-                        font_family=font_family,
+                        font_family=theme.font_family,
                         font_size=scaled_size,
                         font_weight=font_weight,
                         text_anchor="middle",
                         dominant_baseline="central",
-                        transform=(
-                            f"rotate({rotation} {candidate_x} {candidate_y})"
-                        ),
+                        transform=(f"rotate({rotation} {candidate_x} {candidate_y})"),
                     )
                 )
                 break
