@@ -1,9 +1,12 @@
+import random
+
 import pydreamplet as dp
 from data_reader import COMPANY_FILES, get_combo_chart_data
 from pydreamplet.markers import TICK_BOTTOM, Marker
 from pydreamplet.utils import calculate_ticks
 
 from tools.runtime import (
+    get_example_dir,
     get_example_name,
     get_motive,
     get_motive_path,
@@ -12,6 +15,33 @@ from tools.runtime import (
 
 motive = get_motive()
 theme = dp.Theme(get_motive_path(motive)) if motive else dp.Theme()
+
+
+def icon_label(
+    filename: str,
+    label: str,
+    color: str,
+    pos: tuple[float, float],
+    text_x: float,
+    text_anchor: str = "start",
+) -> dp.G:
+    icon = dp.SVG.from_file(str(get_example_dir() / "assets" / filename))
+    icon.find("path", id="background").fill = dp.tone(theme.surface, 0.1)
+    icon.find("path", id="background-strips").fill = dp.tone(theme.surface, 0.15)
+    icon.find("path", id="frame").fill = color
+    icon.find("path", id="chart").fill = color
+    return dp.G(pos=pos).append(
+        icon,
+        dp.Text(
+            label,
+            x=text_x,
+            y=30,
+            fill=color,
+            font_size=22,
+            text_anchor=text_anchor,
+        ),
+    )
+
 
 svg = dp.SVG(
     1024,
@@ -22,15 +52,11 @@ svg = dp.SVG(
 
 margin = {"left": 88, "right": 88, "top": 112, "bottom": 72}
 
-# symbol = choice(list(COMPANY_FILES))
-symbol = "AAPL"
+symbol = random.choice(list(COMPANY_FILES.keys()))
 company_name = COMPANY_FILES[symbol].removesuffix(".csv").title()
 data = get_combo_chart_data(symbol)
 
-start_ordinal = min(point.date.toordinal() for point in data.monthly_prices)
-end_ordinal = max(point.date.toordinal() for point in data.monthly_prices)
 max_revenue = max(item.revenue for item in data.annual_revenue)
-max_close = max(point.close for point in data.monthly_prices)
 
 # header
 svg.append(
@@ -194,6 +220,18 @@ for tick in calculate_ticks(0, max(stock_values), 5):
     )
 
 svg.append(axis_layer, revenue_layer, stock_layer)
+
+svg.append(
+    icon_label("revenue.svg", "Total Revenue", theme.blue, (30, 40), 70),
+    icon_label(
+        "stock_price.svg",
+        "Stock Price",
+        theme.green,
+        (svg.w - 90, 40),
+        -10,
+        "end",
+    ),
+)
 
 filename_suffix = f"_{motive}" if motive else ""
 svg.save(get_output_path(f"{get_example_name()}{filename_suffix}.svg"))
